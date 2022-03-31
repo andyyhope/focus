@@ -1,0 +1,6 @@
+framework module ObjcDynamic {
+    umbrella header "ObjcDynamic-umbrella.h"
+
+    export *
+    module * { export * }
+}

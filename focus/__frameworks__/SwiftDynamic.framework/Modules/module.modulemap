@@ -1,0 +1,11 @@
+framework module SwiftDynamic {
+    umbrella header "SwiftDynamic-umbrella.h"
+
+    export *
+    module * { export * }
+}
+
+module SwiftDynamic.Swift {
+    header "SwiftDynamic-Swift.h"
+    requires objc
+}
