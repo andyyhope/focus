@@ -1,0 +1,14 @@
+FOCUSED_FRAMEWORKS_FULL = set([
+### FOCUS_SET_FULL_BEGIN ###
+":ObjcB",
+":ZZZ",
+### FOCUS_SET_FULL_END ###
+])
+
+
+FOCUSED_FRAMEWORKS_SHORTHAND = set([
+### FOCUS_SET_SHORTHAND_BEGIN ###
+"//focus:ObjcB",
+"//focus:ZZZ",
+### FOCUS_SET_SHORTHAND_END ###
+])

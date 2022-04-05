@@ -34,10 +34,6 @@ def focused_apple_framework(name, **kwargs):
     output_umbrella_header_file = unfocused_framework + "Headers/" + name + "-umbrella.h"
     output_module_header_file = unfocused_framework + "Headers/" + name + ".h"
     output_module_map_file = unfocused_framework + "Modules/module.modulemap"
-    
-
-
-    print(output_info_plist_file)
 
     command=[
     	"$(location //binaries:framework_builder)",

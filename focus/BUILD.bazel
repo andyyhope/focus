@@ -72,9 +72,8 @@ apple_framework(
         ":ObjcA",
         # ":ObjcDynamic",
         # ":SwiftDynamic",
-        # ":ObjcDynamicImport",
-        # ":SwiftDynamicImport",
         ":MixedB",
+        # ":ZZZ__unfocused",
     ]
 )
 
@@ -117,9 +116,7 @@ apple_framework(
     private_headers = glob(["ObjcB/__internal__/*.h"]),
     platforms = PLATFORMS,
     visibility = PUBLIC_VISIBILITY,
-    deps = [
-        # ":ZZZ",
-    ]
+    deps = []
 )
 
 ## Swift Frameworks
