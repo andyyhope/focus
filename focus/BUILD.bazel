@@ -72,8 +72,8 @@ apple_framework(
         ":ObjcA",
         # ":ObjcDynamic",
         # ":SwiftDynamic",
-        ":ObjcDynamicImport",
-        ":SwiftDynamicImport",
+        # ":ObjcDynamicImport",
+        # ":SwiftDynamicImport",
         ":MixedB",
     ]
 )
@@ -118,7 +118,7 @@ apple_framework(
     platforms = PLATFORMS,
     visibility = PUBLIC_VISIBILITY,
     deps = [
-        ":ZZZ",
+        # ":ZZZ",
     ]
 )
 
