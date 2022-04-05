@@ -62,30 +62,26 @@ def main():
 		ext = os.path.splitext(input)[-1]
 		filename = os.path.split(input)[-1]
 		if filename == f"{args.module}.framework.zip":
-			print(f"Found zip: {input}")
 			tempdir = tempfile.mkdtemp(prefix=f"{args.module}_")
 			with zipfile.ZipFile(input,"r") as zip_ref:
 				zip_ref.extractall(tempdir)
 				extracted_framework_dir = os.path.join(tempdir, f"{args.module}.framework")
 				if not os.path.exists(extracted_framework_dir):
 					raise Exception("Extracted framework doesn't exist")
-				for fp in os.listdir(extracted_framework_dir):
-					filename = os.path.split(fp)[-1]
-					print("zip: " + filename)
-					if filename == "Info.plist":
-						_copy(input, args.outputs.info_plist)
-					elif filename == args.module:
-						_copy(input, args.outputs.binary)
-					
+				for file in os.listdir(extracted_framework_dir):
+					print(file)
+					extracted_file = os.path.join(extracted_framework_dir, file)
+					print(extracted_file)
+					if file == "Info.plist":
+						_copy(extracted_file, args.outputs.info_plist)
+					elif file == args.module:
+						_copy(extracted_file, args.outputs.binary)
 		elif f"{args.module}.framework/Headers/" in input:
-			print(f"Found headers: {input}")
 			if filename == f"{args.module}.h":
 				_copy(input, args.outputs.module_header)
 			elif filename == f"{args.module}-umbrella.h":
 				_copy(input, args.outputs.umbrella_header)
-			
 		elif f"{args.module}.framework/Modules/" in input:
-			print(f"Found module: {input}")
 			if filename == f"module.modulemap":
 				_copy(input, args.outputs.module_map)
 			

@@ -1,0 +1,309 @@
+load("@build_bazel_rules_ios//rules:app.bzl", "ios_application")
+load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework",)
+load("@build_bazel_rules_ios//rules:library.bzl", "apple_library")
+load("@build_bazel_rules_ios//rules:test.bzl", "ios_unit_test")
+load("@build_bazel_rules_ios//rules:xcodeproj.bzl", "xcodeproj")
+
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+load("@build_bazel_rules_ios//rules:apple_patched.bzl", "apple_dynamic_framework_import",)
+
+load("//macros:focus.bzl", "focused_apple_framework")
+
+IOS_MIN = "12.0"
+SWIFT_VERSION = "5.1"
+PLATFORMS = {"ios": IOS_MIN}
+
+DEFINES = [
+    "MACRO_H",
+    "MACRO_I=1",
+    "MACRO_J=0",
+]
+SWIFT_DEFINES = [
+    "MACRO_K",
+    "MACRO_L=1",
+    "MACRO_M=0",
+]
+
+PUBLIC_VISIBILITY = ["//visibility:public"]
+
+FOCUS_PLIST = "_app/Info.plist"
+FOCUS_ENTITLEMENTS = "_app/Focus.entitlements"
+
+
+
+# Tests
+
+focused_apple_framework(
+    name = "ZZZ",
+    srcs = glob( 
+        include = [
+            "ZZZ/**/*.h",
+            "ZZZ/**/*.m",
+        ],
+        exclude = [
+            "ZZZ/__tests__/*.h",
+            "ZZZ/__tests__/*.m",
+        ]),
+    private_headers = glob([
+        "ZZZ/__internal__/*.h"
+    ]),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+)
+
+# ObjC Frameworks
+
+apple_framework(
+    name = "Base", # ObjC
+    srcs = glob([
+        "Base/*.m", 
+        "Base/*.h",
+    ]),
+    private_headers = glob(["Base/Internal/*.h"]),
+    sdk_frameworks = [
+        "Foundation", 
+        "UIKit",
+    ],
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+    deps = [
+        ":SwiftA",
+        ":ObjcA",
+        # ":ObjcDynamic",
+        # ":SwiftDynamic",
+        ":ObjcDynamicImport",
+        ":SwiftDynamicImport",
+        ":MixedB",
+    ]
+)
+
+apple_framework(
+    name = "ObjcA",
+    srcs = glob( 
+        include = [
+            "ObjcA/**/*.h",
+            "ObjcA/**/*.m",
+        ],
+        exclude = [
+            "ObjcA/__tests__/*.h",
+            "ObjcA/__tests__/*.m",
+        ]),
+    private_headers = glob([
+        "ObjcA/__internal__/*.h"
+    ]),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+)
+
+ios_unit_test(
+    name = "ObjcATests",
+    srcs = glob([
+        "ObjcA/__tests__/*.h",
+        "ObjcA/__tests__/*.m",
+    ]),
+    minimum_os_version = IOS_MIN,
+    deps = [
+        ":ObjcA",
+    ]
+)
+
+apple_framework(
+    name = "ObjcB",
+    srcs = glob([
+        "ObjcB/**/*.h",
+        "ObjcB/**/*.m",
+    ]),
+    private_headers = glob(["ObjcB/__internal__/*.h"]),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    deps = [
+        ":ZZZ",
+    ]
+)
+
+## Swift Frameworks
+
+apple_framework(
+    name = "SwiftA",
+    srcs = glob(
+        include = [
+            "SwiftA/**/*.swift",
+        ],
+        exclude = [
+            "SwiftA/__tests__/*.swift",
+        ]
+    ),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+    deps = [
+        ":ObjcB", 
+        ":SwiftB", 
+        ":MixedA",
+    ]
+)
+
+ios_unit_test(
+    name = "SwiftATests",
+    srcs = glob([
+        "SwiftA/__tests__/*.swift",
+    ]),
+    minimum_os_version = IOS_MIN,
+    test_host = True,
+    deps = [
+        ":SwiftA",
+    ]
+)
+
+apple_framework(
+    name = "SwiftB",
+    srcs = glob(
+        include = [
+            "SwiftB/**/*.swift",
+        ],
+    ),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+)
+
+## Mixed Frameworks
+
+apple_framework(
+    name = "MixedA",
+    srcs = glob(
+        include = [
+            "MixedA/**/*.h",
+            "MixedA/**/*.m",
+            "MixedA/**/*.swift",
+        ],
+    ),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+)
+
+apple_framework(
+    name = "MixedB",
+    srcs = glob(
+        include = [
+            "MixedB/**/*.h",
+            "MixedB/**/*.m",
+            "MixedB/**/*.swift",
+        ],
+    ),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+)
+
+ios_application(
+    name = "FocusApp",
+    bundle_id = "com.andyyhope.Focus",
+    srcs = glob(["_app/main.m"]),
+    families = ["iphone",],
+    entitlements = FOCUS_ENTITLEMENTS,
+    infoplists = [FOCUS_PLIST],
+    minimum_os_version = IOS_MIN,
+    visibility = PUBLIC_VISIBILITY,
+    swift_version = SWIFT_VERSION,
+    deps = [
+        ":Base",
+    ],
+)
+
+
+## Dynamic Frameworks
+
+apple_framework(
+    name = "ObjcDynamic",
+    srcs = glob([
+        "ObjcDynamic/**/*.h",
+        "ObjcDynamic/**/*.m",
+    ]),
+    private_headers = glob(["ObjcDynamic/__internal__/*.h"]),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    link_dynamic = True,
+    bundle_id = "com.andyyhope.frameworks.ObjcDynamic",
+    infoplists = ["ObjcDynamic/__resources__/Info.plist"],
+)
+
+apple_dynamic_framework_import(
+    name = "ObjcDynamicImport",
+    framework_imports = 
+    [
+      ":ObjcDynamic",
+    ],
+    visibility = PUBLIC_VISIBILITY,
+)
+
+apple_framework(
+    name = "SwiftDynamic",
+    srcs = glob([
+        "SwiftDynamic/**/*.swift",
+    ]),
+    platforms = PLATFORMS,
+    visibility = PUBLIC_VISIBILITY,
+    link_dynamic = True,
+    bundle_id = "com.andyyhope.frameworks.SwiftDynamic",
+    infoplists = ["SwiftDynamic/__resources__/Info.plist"],
+)
+
+apple_dynamic_framework_import(
+    name = "SwiftDynamicImport",
+    framework_imports = glob(
+        [
+          "__frameworks__/SwiftDynamic.framework/**",
+        ],
+        allow_empty = False,
+    ),
+    visibility = PUBLIC_VISIBILITY,
+)
+
+## Xcode Projects 
+
+xcodeproj(
+    name = "Xcode",
+    project_name = "Focus",
+    bazel_path = "bazelisk",
+    generate_schemes_for_product_types = ["application"],
+    include_transitive_targets = True,
+    infoplist_stub = FOCUS_PLIST,
+    additional_lldb_settings = [
+        "log enable -f /tmp/lldb.log lldb types mmap module",
+    ],
+    deps = [
+        ":FocusApp",
+    ],
+)
+
+## Xcode Unit Tests
+
+xcodeproj(
+    name = "XcodeTests",
+    project_name = "FocusTests",
+    bazel_path = "bazelisk",
+    generate_schemes_for_product_types = [
+        "application",
+        "bundle.unit-test",
+        "test_suite",
+    ],
+    testonly = True,
+    include_transitive_targets = True,
+    infoplist_stub = FOCUS_PLIST,
+    additional_lldb_settings = [
+        "log enable -f /tmp/lldb_tests.log lldb types mmap module expr",
+    ],
+    deps = [
+        ":SwiftATests",
+    ],
+)
+
+# load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
+# xcode_project(
+#     name = "FocusXCHammer",
+#     targets = [":FocusApp"],
+#     # paths = [ "**" ],
+# )

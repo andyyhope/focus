@@ -1,0 +1,6 @@
+py_binary(
+    name = "framework_builder",
+    srcs = ["framework_builder.py"],
+    visibility = ["//visibility:public"],
+    python_version = "PY3",
+)
