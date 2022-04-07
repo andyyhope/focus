@@ -1,0 +1,5 @@
+filegroup(
+    name = "FrameworkDefaultInfoPlist",
+    srcs = ["Info.plist"],
+    visibility = ["//visibility:public"]
+)

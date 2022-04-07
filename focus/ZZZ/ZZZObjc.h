@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface ZZZ : NSObject
+@interface ZZZObjc : NSObject
 
 + (void)hello;
 + (NSString *)name;

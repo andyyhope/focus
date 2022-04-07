@@ -1,10 +1,10 @@
 
-#import "ZZZ.h"
+#import "ZZZObjc.h"
 
-@interface ZZZ ()
+@interface ZZZObjc ()
 @end
 
-@implementation ZZZ {
+@implementation ZZZObjc {
 }
 
 + (NSString *)name {

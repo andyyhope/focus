@@ -1,14 +1,7 @@
-FOCUSED_FRAMEWORKS_FULL = set([
-### FOCUS_SET_FULL_BEGIN ###
-":ObjcB",
-":ZZZ",
-### FOCUS_SET_FULL_END ###
-])
-
-
-FOCUSED_FRAMEWORKS_SHORTHAND = set([
-### FOCUS_SET_SHORTHAND_BEGIN ###
-"//focus:ObjcB",
-"//focus:ZZZ",
-### FOCUS_SET_SHORTHAND_END ###
-])
+FOCUSED_FRAMEWORKS_MAP = {
+### FOCUSED_FRAMEWORKS_MAP_BEGIN ###
+	":ObjcB" : 1,
+	":SwiftA": 1,
+	":ZZZ" : 1,
+### FOCUSED_FRAMEWORKS_MAP_END ###
+}

@@ -6,7 +6,6 @@ load("@build_bazel_rules_ios//rules:xcodeproj.bzl", "xcodeproj")
 
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@build_bazel_rules_ios//rules:apple_patched.bzl", "apple_dynamic_framework_import",)
-
 load("//macros:focus.bzl", "focused_apple_framework")
 
 IOS_MIN = "12.0"
@@ -32,8 +31,8 @@ FOCUS_ENTITLEMENTS = "_app/Focus.entitlements"
 
 
 # Tests
-
 focused_apple_framework(
+#apple_framework(
     name = "ZZZ",
     srcs = glob( 
         include = [
@@ -52,8 +51,8 @@ focused_apple_framework(
 )
 
 # ObjC Frameworks
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "Base", # ObjC
     srcs = glob([
         "Base/*.m", 
@@ -73,11 +72,11 @@ apple_framework(
         # ":ObjcDynamic",
         # ":SwiftDynamic",
         ":MixedB",
-        # ":ZZZ__unfocused",
+        ":ZZZ",
     ]
 )
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "ObjcA",
     srcs = glob( 
         include = [
@@ -106,8 +105,8 @@ ios_unit_test(
         ":ObjcA",
     ]
 )
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "ObjcB",
     srcs = glob([
         "ObjcB/**/*.h",
@@ -120,8 +119,8 @@ apple_framework(
 )
 
 ## Swift Frameworks
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "SwiftA",
     srcs = glob(
         include = [
@@ -152,8 +151,8 @@ ios_unit_test(
         ":SwiftA",
     ]
 )
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "SwiftB",
     srcs = glob(
         include = [
@@ -166,8 +165,8 @@ apple_framework(
 )
 
 ## Mixed Frameworks
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "MixedA",
     srcs = glob(
         include = [
@@ -180,8 +179,8 @@ apple_framework(
     visibility = PUBLIC_VISIBILITY,
     swift_version = SWIFT_VERSION,
 )
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "MixedB",
     srcs = glob(
         include = [
@@ -212,8 +211,8 @@ ios_application(
 
 
 ## Dynamic Frameworks
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "ObjcDynamic",
     srcs = glob([
         "ObjcDynamic/**/*.h",
@@ -235,8 +234,8 @@ apple_dynamic_framework_import(
     ],
     visibility = PUBLIC_VISIBILITY,
 )
-
-apple_framework(
+focused_apple_framework(
+#apple_framework(
     name = "SwiftDynamic",
     srcs = glob([
         "SwiftDynamic/**/*.swift",
@@ -291,7 +290,7 @@ xcodeproj(
     include_transitive_targets = True,
     infoplist_stub = FOCUS_PLIST,
     additional_lldb_settings = [
-        "log enable -f /tmp/lldb_tests.log lldb types mmap module expr",
+        "log enable -f /tmp/lldb_tests.log",
     ],
     deps = [
         ":SwiftATests",

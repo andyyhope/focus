@@ -46,10 +46,10 @@
 //  NSLog(@"%@", name);
 //  NSLog(@"%@", SwiftDynamic.name);
   
-  name = ZZZ.name;
-  [ZZZ hello];
+  name = ZZZObjc.name;
+  [ZZZObjc hello];
   NSLog(@"%@", name);
-  NSLog(@"%@", ZZZ.name);
+  NSLog(@"%@", ZZZObjc.name);
   
     
   UITabBarController *bar = [[UITabBarController alloc] init];
