@@ -12,27 +12,14 @@ IOS_MIN = "12.0"
 SWIFT_VERSION = "5.1"
 PLATFORMS = {"ios": IOS_MIN}
 
-DEFINES = [
-    "MACRO_H",
-    "MACRO_I=1",
-    "MACRO_J=0",
-]
-SWIFT_DEFINES = [
-    "MACRO_K",
-    "MACRO_L=1",
-    "MACRO_M=0",
-]
-
 PUBLIC_VISIBILITY = ["//visibility:public"]
 
 FOCUS_PLIST = "_app/Info.plist"
 FOCUS_ENTITLEMENTS = "_app/Focus.entitlements"
 
 
-
 # Tests
 focused_apple_framework(
-#apple_framework(
     name = "ZZZ",
     srcs = glob( 
         include = [
@@ -52,7 +39,6 @@ focused_apple_framework(
 
 # ObjC Frameworks
 focused_apple_framework(
-#apple_framework(
     name = "Base", # ObjC
     srcs = glob([
         "Base/*.m", 
@@ -69,14 +55,13 @@ focused_apple_framework(
     deps = [
         ":SwiftA",
         ":ObjcA",
-        # ":ObjcDynamic",
-        # ":SwiftDynamic",
+        ":ObjcDynamic",
+        ":SwiftDynamic",
         ":MixedB",
         ":ZZZ",
     ]
 )
 focused_apple_framework(
-#apple_framework(
     name = "ObjcA",
     srcs = glob( 
         include = [
@@ -106,7 +91,6 @@ ios_unit_test(
     ]
 )
 focused_apple_framework(
-#apple_framework(
     name = "ObjcB",
     srcs = glob([
         "ObjcB/**/*.h",
@@ -120,7 +104,6 @@ focused_apple_framework(
 
 ## Swift Frameworks
 focused_apple_framework(
-#apple_framework(
     name = "SwiftA",
     srcs = glob(
         include = [
@@ -152,7 +135,6 @@ ios_unit_test(
     ]
 )
 focused_apple_framework(
-#apple_framework(
     name = "SwiftB",
     srcs = glob(
         include = [
@@ -166,7 +148,6 @@ focused_apple_framework(
 
 ## Mixed Frameworks
 focused_apple_framework(
-#apple_framework(
     name = "MixedA",
     srcs = glob(
         include = [
@@ -180,7 +161,6 @@ focused_apple_framework(
     swift_version = SWIFT_VERSION,
 )
 focused_apple_framework(
-#apple_framework(
     name = "MixedB",
     srcs = glob(
         include = [
@@ -212,7 +192,6 @@ ios_application(
 
 ## Dynamic Frameworks
 focused_apple_framework(
-#apple_framework(
     name = "ObjcDynamic",
     srcs = glob([
         "ObjcDynamic/**/*.h",
@@ -226,16 +205,8 @@ focused_apple_framework(
     infoplists = ["ObjcDynamic/__resources__/Info.plist"],
 )
 
-apple_dynamic_framework_import(
-    name = "ObjcDynamicImport",
-    framework_imports = 
-    [
-      ":ObjcDynamic",
-    ],
-    visibility = PUBLIC_VISIBILITY,
-)
+
 focused_apple_framework(
-#apple_framework(
     name = "SwiftDynamic",
     srcs = glob([
         "SwiftDynamic/**/*.swift",
@@ -247,16 +218,22 @@ focused_apple_framework(
     infoplists = ["SwiftDynamic/__resources__/Info.plist"],
 )
 
-apple_dynamic_framework_import(
-    name = "SwiftDynamicImport",
-    framework_imports = glob(
-        [
-          "__frameworks__/SwiftDynamic.framework/**",
-        ],
-        allow_empty = False,
-    ),
-    visibility = PUBLIC_VISIBILITY,
-)
+# apple_dynamic_framework_import(
+#     name = "ObjcDynamicImport",
+#     framework_imports = [
+#       ":ObjcDynamic",
+#     ],
+#     visibility = PUBLIC_VISIBILITY,
+# )
+# apple_dynamic_framework_import(
+#     name = "SwiftDynamicImport",
+#     framework_imports = glob([
+#           "__frameworks__/SwiftDynamic.framework/**",
+#         ],
+#         allow_empty = False,
+#     ),
+#     visibility = PUBLIC_VISIBILITY,
+# )
 
 ## Xcode Projects 
 
@@ -296,10 +273,3 @@ xcodeproj(
         ":SwiftATests",
     ],
 )
-
-# load("@xchammer//:BazelExtensions/xcodeproject.bzl", "xcode_project")
-# xcode_project(
-#     name = "FocusXCHammer",
-#     targets = [":FocusApp"],
-#     # paths = [ "**" ],
-# )

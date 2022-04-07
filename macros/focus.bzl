@@ -7,6 +7,8 @@ PLATFORMS = {"ios": IOS_MIN}
 PUBLIC_VISIBILITY = ["//visibility:public"]
 UNFOCUSED_SUFFIX = "__unfocused"
 
+IS_FOCUS_ENABLED = True
+
 
 def _augmented_deps(deps):
     augmented_deps = []
@@ -29,6 +31,7 @@ def focused_apple_framework(name, **kwargs):
     
     srcs = kwargs.pop("srcs", [])
     private_headers = kwargs.pop("private_headers", [])
+    deps = kwargs.pop("deps", [])
 
     apple_framework(
         name = name,
@@ -38,10 +41,10 @@ def focused_apple_framework(name, **kwargs):
         platforms = kwargs.pop("platforms", PLATFORMS),
         visibility = kwargs.pop("visibility", PUBLIC_VISIBILITY),
         swift_version = kwargs.pop("swift_version", ""),
-        link_dynamic = kwargs.pop("link_dynamic", True),
+        link_dynamic = kwargs.pop("link_dynamic", IS_FOCUS_ENABLED),
         bundle_id = kwargs.pop("bundle_id", "com.andyyhope.frameworks." + name),
         infoplists = kwargs.pop("infoplists", ["//__resources__:FrameworkDefaultInfoPlist"]),
-        deps = _augmented_deps(kwargs.pop("deps", [])),
+        deps = _augmented_deps(deps) if IS_FOCUS_ENABLED else deps,
         **kwargs,
     )
 

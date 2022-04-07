@@ -18,8 +18,8 @@
 
 @import SwiftA;
 @import ObjcA;
-//@import ObjcDynamic;
-//@import SwiftDynamic;
+@import ObjcDynamic;
+@import SwiftDynamic;
 @import ZZZ;
 
 @implementation AppDelegate
@@ -36,15 +36,15 @@
   NSLog(@"%@", name);
   NSLog(@"%@", SwiftA.name);
   
-//  name = ObjcDynamic.name;
-//  [ObjcDynamic hello];
-//  NSLog(@"%@", name);
-//  NSLog(@"%@", ObjcDynamic.name);
-//
-//  name = SwiftDynamic.name;
-//  [SwiftDynamic hello];
-//  NSLog(@"%@", name);
-//  NSLog(@"%@", SwiftDynamic.name);
+  name = ObjcDynamic.name;
+  [ObjcDynamic hello];
+  NSLog(@"%@", name);
+  NSLog(@"%@", ObjcDynamic.name);
+
+  name = SwiftDynamic.name;
+  [SwiftDynamic hello];
+  NSLog(@"%@", name);
+  NSLog(@"%@", SwiftDynamic.name);
   
   name = ZZZObjc.name;
   [ZZZObjc hello];
