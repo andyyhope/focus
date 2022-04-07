@@ -1,14 +1,11 @@
 load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework",)
 load("@build_bazel_rules_ios//rules:apple_patched.bzl", "apple_dynamic_framework_import",)
-load("//macros:focused_frameworks.bzl", "FOCUSED_FRAMEWORKS_MAP",)
+load("//macros:focused_frameworks.bzl", "FOCUSED_FRAMEWORKS_MAP", "IS_FOCUS_ENABLED")
 
 IOS_MIN = "12.0"
 PLATFORMS = {"ios": IOS_MIN}
 PUBLIC_VISIBILITY = ["//visibility:public"]
 UNFOCUSED_SUFFIX = "__unfocused"
-
-IS_FOCUS_ENABLED = True
-
 
 def _augmented_deps(deps):
     augmented_deps = []
