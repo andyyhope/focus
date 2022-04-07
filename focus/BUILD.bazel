@@ -58,7 +58,6 @@ focused_apple_framework(
         ":ObjcDynamic",
         ":SwiftDynamic",
         ":MixedB",
-        ":ZZZ",
     ]
 )
 focused_apple_framework(
@@ -77,6 +76,9 @@ focused_apple_framework(
     ]),
     platforms = PLATFORMS,
     visibility = PUBLIC_VISIBILITY,
+    deps = [
+        ":ZZZ",
+    ]
 )
 
 ios_unit_test(
@@ -217,23 +219,6 @@ focused_apple_framework(
     bundle_id = "com.andyyhope.frameworks.SwiftDynamic",
     infoplists = ["SwiftDynamic/__resources__/Info.plist"],
 )
-
-# apple_dynamic_framework_import(
-#     name = "ObjcDynamicImport",
-#     framework_imports = [
-#       ":ObjcDynamic",
-#     ],
-#     visibility = PUBLIC_VISIBILITY,
-# )
-# apple_dynamic_framework_import(
-#     name = "SwiftDynamicImport",
-#     framework_imports = glob([
-#           "__frameworks__/SwiftDynamic.framework/**",
-#         ],
-#         allow_empty = False,
-#     ),
-#     visibility = PUBLIC_VISIBILITY,
-# )
 
 ## Xcode Projects 
 

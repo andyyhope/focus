@@ -20,7 +20,7 @@
 @import ObjcA;
 @import ObjcDynamic;
 @import SwiftDynamic;
-@import ZZZ;
+
 
 @implementation AppDelegate
 
@@ -45,12 +45,6 @@
   [SwiftDynamic hello];
   NSLog(@"%@", name);
   NSLog(@"%@", SwiftDynamic.name);
-  
-  name = ZZZObjc.name;
-  [ZZZObjc hello];
-  NSLog(@"%@", name);
-  NSLog(@"%@", ZZZObjc.name);
-  
     
   UITabBarController *bar = [[UITabBarController alloc] init];
   [bar setViewControllers:

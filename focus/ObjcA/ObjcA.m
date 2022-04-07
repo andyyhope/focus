@@ -2,6 +2,8 @@
 #import "ObjcA.h"
 #import "ObjcAInternal.h"
 
+@import ZZZ;
+
 @interface ObjcA ()
 @end
 
@@ -14,6 +16,13 @@
 
 + (void)hello {
     NSLog(@"Hello %@", self.name);
+}
+
++ (void)deps {
+  NSString *name = ZZZObjc.name;
+  [ZZZObjc hello];
+  NSLog(@"%@", name);
+  NSLog(@"%@", ZZZObjc.name);
 }
 
 @end
